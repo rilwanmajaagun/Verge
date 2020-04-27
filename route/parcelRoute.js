@@ -12,11 +12,11 @@ const {
 const {
     schema
 } = require("../Authorization/validation")
-const {verifyUserToken} = require("../Authorization/verifyToken")
+const {isAdmin} =require("../controller/adminController")
 
 
 router.post(
-    "/parcel/:user_id",verifyUserToken,
+    "/parcel/:user_id",
     async (req, res, next) => {
         const value = await schema.parcel.validate(req.body)
         if (value.error) {
@@ -29,6 +29,7 @@ router.post(
     async (req, res) => {
         const { user_id } = req.params;
         try {
+            await isAdmin(user_id);
             const result = await createNewParcel(user_id, req.body);
             return res.status(201).json(result);
         } catch (e) {

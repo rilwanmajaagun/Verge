@@ -138,10 +138,37 @@ async function getAllParcel() {
         })
     }
 }
+async function isAdmin(id) {
+    const queryObj = {
+        text: queries.findUserById,
+        values: [id],
+    };
+    try {
+        const { rows } = await db.query(queryObj);
+        if (rows[0].is_admin == false) {
+            return Promise.resolve();
+        }
+        if (rows[0].is_admin == true) {
+            return Promise.reject({
+                status: "erorr",
+                code: 409,
+                message: "You are not an Authorized User",
+            });
+        }
+    } catch (e) {
+        console.log(e);
+        return Promise.reject({
+            status: "error",
+            code: 500,
+            message: "Error finding user",
+        });
+    }
+}
 
 module.exports = {
     createNewAdmin,
     changeOrderStatus,
     changeOrderlocation,
-    getAllParcel
+    getAllParcel,
+    isAdmin
 }

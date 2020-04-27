@@ -53,6 +53,8 @@ const queries = {
     getStatus: `
     SELECT * FROM verge_parcel WHERE user_id=($1) AND id=($2)
     `,
+    findUserById: `
+    SELECT * FROM verge_user WHERE id=($1)`,
 };
 
 module.exports = queries;

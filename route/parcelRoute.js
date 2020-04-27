@@ -12,11 +12,11 @@ const {
 const {
     schema
 } = require("../Authorization/validation")
-const verifyToken = require("../Authorization/verifyToken")
+const {verifyUserToken} = require("../Authorization/verifyToken")
 
 
 router.post(
-    "/parcel/:user_id",
+    "/parcel/:user_id",verifyUserToken,
     async (req, res, next) => {
         const value = await schema.parcel.validate(req.body)
         if (value.error) {

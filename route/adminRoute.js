@@ -13,7 +13,7 @@ const {
 const {
     schema
 } = require("../Authorization/validation")
-const verifyToken = require("../Authorization/verifyToken")
+const {verifyToken}= require("../Authorization/verifyToken")
 
 router.post(
     "/auth/admin/signup",

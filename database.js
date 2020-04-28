@@ -1,11 +1,19 @@
 const { Pool } = require("pg");
+const dotenv = require("dotenv")
+
+dotenv.config();
+
+const connectionString  = process.env.DATA_BASE_URL
+
+
+/** using localPostgres with connectionstring 
+  const connectionString = 'postgresql://postgres:majaagun30@localhost:5432/verge'
+ * */
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'verge',
-    password: "majaagun30",
-    port: 5432
+    connectionString: connectionString
 });
+
+
 pool.on("connect", () => {
     console.log("connected to db successfully");
 });

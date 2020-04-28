@@ -6,7 +6,7 @@ const admin = require("./route/adminRoute")
 const parcel = require("./route/parcelRoute")
 
 let app = express();
-let port = 8080;
+let port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port, () => {

@@ -18,7 +18,17 @@ const generateUserToken = (id, first_name, last_name, email, is_admin, state) =>
 const schema = {
     user: joi.object({
         email: joi.string().email().required(),
+    //     .messages({
+            
+    //     'string.base': 'must be a valid email',
+    //     'string.empty': 'Invalid type, Email cannot be empty'
+    // }),
         password: joi.string().min(6).required(),
+        // .messages({
+        //     'string.base': 'Invalid type, must be a valid email',
+        //     'string.empty': 'Invalid type, Password cannot be empty',
+        //     'any.required': ' is required'
+        // }),
         first_name: joi.string().max(100).required(),
         last_name: joi.string().max(100).required(),
         state: joi.string().max(30).required()

@@ -17,7 +17,10 @@ router.post(
             const value = await schema.user.validate(req.body)
             if (value.error) {
                 return res.json({
-                    message: value.error.details[0].message
+                    message: value.error.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
                 })
             }
         } catch (e) {
@@ -41,7 +44,10 @@ router.post("/auth/login",
         const value = await schema.login.validate(req.body)
         if (value.error) {
             res.json({
-                message: value.error.details[0].message
+                message: value.error.details[0].message.replace(
+                    /[\"]/gi,
+                    ""
+                )
             })
         }
         next();

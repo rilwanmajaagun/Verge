@@ -62,7 +62,7 @@ router.post("/auth/login",
                 })
             }
         } catch (e) {
-            return res.status(e.code).json(e.message)
+            return res.status(e.code).json(e)
         }
 
     }

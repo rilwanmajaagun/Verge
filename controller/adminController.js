@@ -55,11 +55,11 @@ async function createNewAdmin(body) {
     }
 }
 
-async function changeOrderStatus( user_id, id, body) {
+async function changeOrderStatus( id, body) {
     const { status } = body
     const queryObj = {
         text: queries.updateOrderStatusById,
-        values: [status, user_id, id]
+        values: [status, id]
     }
     try {
         const { rowCount } = await db.query(queryObj);
@@ -87,11 +87,11 @@ async function changeOrderStatus( user_id, id, body) {
     }
 }
 
-async function changeOrderlocation(user_id, id, body) {
+async function changeOrderlocation( id, body) {
     const { location } = body
     const queryObj = {
         text: queries.updateOrderlocationById,
-        values: [location, user_id, id]
+        values: [location, id]
     }
     try {
         const { rowCount } = await db.query(queryObj);

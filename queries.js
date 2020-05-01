@@ -42,11 +42,11 @@ const queries = {
     `,
     updateOrderStatusById:
         `
-    UPDATE verge_parcel SET status=($1), user_id=($2) WHERE id=($3) RETURNING *
+    UPDATE verge_parcel SET status=($1) WHERE id=($2) RETURNING *
     `,
     updateOrderlocationById:
         `
-    UPDATE verge_parcel SET location=($1), user_id=($2) WHERE id=($3) RETURNING *
+    UPDATE verge_parcel SET location=($1) WHERE id=($2) RETURNING *
     `,
     getAllUserOrder: `
     SELECT * FROM verge_parcel`,

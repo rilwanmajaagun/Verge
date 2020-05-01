@@ -6,7 +6,11 @@ dotenv.config()
 const verifyToken = async (req, res, next) => {
     const { token } = req.headers;
     if (!token) {
-        return res.status(400).send("token is not provided")
+        return res.status(403).send({
+            status: "forbidden",
+            code: 403,
+            message: "Access Denied"
+        })
     }
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -18,21 +22,33 @@ const verifyToken = async (req, res, next) => {
             is_admin: decoded.is_admin,
             state: decoded.state
         }
-        // if (decoded.is_admin == false) {
-        //     return res.status(400).send("You are not Authorize")
-        // }
+        if (decoded.is_admin == false) {
+            return res.status(400).send({
+                status: "Error",
+                code: 400,
+                message: "User not Allowed"
+            })
+        }
         res.locals.user = req.user
         next();
     } catch (error) {
         console.log(error)
-        return res.status(400).send("Authentication Failed")
+        res.status(400).send({
+            status: "Error",
+            code: 400,
+            message: "Authorization Failed"
+        })
     }
 }
 
 const verifyUserToken = async (req, res, next) => {
     const { token } = req.headers;
     if (!token) {
-        return res.status(400).send("token is not provided")
+        return res.status(403).send({
+            status: "forbidden",
+            code: 403,
+            message: "Token not Provided"
+        })
     }
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -45,12 +61,21 @@ const verifyUserToken = async (req, res, next) => {
             state: decoded.state
         }
         if (decoded.is_admin !== false) {
-            return res.status(400).send("You are not Authorize")
+            return res.status(400).send({
+                status: "Error",
+                code: 400,
+                message: "User not Allowed"
+            })
         }
+        res.locals.user = req.user
         next();
     } catch (error) {
         console.log(error)
-        return res.status(400).send("Authentication Failed")
+        return res.status(400).send({
+            status: "Error",
+            code: 400,
+            message: "Authorization Failed"
+        })
     }
 }
 

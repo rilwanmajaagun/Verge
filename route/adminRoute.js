@@ -54,10 +54,10 @@ router.get("/parcels/all", verifyToken,
     }
 );
 
-router.put("/parcel/location/change/:user_id/:id", verifyToken,
+router.put("/parcel/location/change/:id", verifyToken,
     async (req, res, next) => {
-        const { user_id } = req.params
-        const value = await schema.idparams.user_id.validate(user_id)
+        const { id } = req.params
+        const value = await schema.idparam.id.validate(id)
         if (value.error) {
             res.json({
                 message: value.error.details[0].message
@@ -66,9 +66,9 @@ router.put("/parcel/location/change/:user_id/:id", verifyToken,
         next();
     },
     async (req, res) => {
-        const { user_id, id} = req.params;
+        const { id } = req.params;
         try {
-            const result = await changeOrderlocation(user_id, id, req.body);
+            const result = await changeOrderlocation(id, req.body);
             return res.status(200).json(result)
         } catch (e) {
             return res.status(e.code).json(e)
@@ -76,10 +76,10 @@ router.put("/parcel/location/change/:user_id/:id", verifyToken,
     }
 );
 
-router.put("/parcel/status/change/:user_id/:id", verifyToken,
+router.put("/parcel/status/change/:id", verifyToken,
     async (req, res, next) => {
-        const { user_id } = req.params
-        const value = await schema.idparams.user_id.validate(user_id)
+        const { id } = req.params;
+        const value = await schema.idparam.id.validate(id)
         if (value.error) {
             res.json({
                 message: value.error.details[0].message
@@ -88,9 +88,9 @@ router.put("/parcel/status/change/:user_id/:id", verifyToken,
         next();
     },
     async (req, res) => {
-        const { user_id , id} = req.params;
+        const { id } = req.params;
         try {
-            const result = await changeOrderStatus(user_id, id, req.body);
+            const result = await changeOrderStatus(id, req.body);
             return res.status(200).json(result)
         } catch (e) {
             return res.status(e.code).json(e)

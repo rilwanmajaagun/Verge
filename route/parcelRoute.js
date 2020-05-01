@@ -13,10 +13,14 @@ const {
     schema
 } = require("../Authorization/validation")
 const {isAdmin} =require("../controller/adminController")
-const { verifyToken } = require("../Authorization/verifyToken")
+const { verifyToken, verifyUserToken } = require("../Authorization/verifyToken")
+
+
+
+
 
 router.post(
-    "/parcel", verifyToken,
+    "/parcel", verifyUserToken,
     async (req, res, next) => {
         const value = await schema.parcel.validate(req.body)
         if (value.error) {
@@ -27,7 +31,7 @@ router.post(
         next();
     },
     async (req, res) => {
-        const user_id = res.locals.id
+        const user_id =   res.locals.user.id
         try {
             await isAdmin(user_id);
             const result = await createNewParcel(user_id, req.body);
@@ -38,10 +42,10 @@ router.post(
     }
 )
 
-router.delete("/parcel/cancel/:user_id/:id",
+router.put("/parcel/cancel/:id", verifyUserToken,
     async (req, res, next) => {
-        const { user_id } = req.params
-        const value = await schema.idparams.user_id.validate(user_id)
+        const {id} =  req.params
+        const value = await schema.idparam.id.validate(id)
         if (value.error) {
             res.json({
                 message: value.error.details[0].message
@@ -50,7 +54,8 @@ router.delete("/parcel/cancel/:user_id/:id",
         next();
     },
     async (req, res) => {
-        const { user_id, id} = req.params;
+        const {id} = req.params;
+        const user_id =   res.locals.user.id
         try {
             await checkStatus(user_id,id)
             const result = await deleteUserParcelById(user_id, id);
@@ -62,10 +67,10 @@ router.delete("/parcel/cancel/:user_id/:id",
 );
 
 
-router.put("/parcel/destination/change/:user_id/:id",
+router.put("/parcel/destination/change/:id", verifyUserToken,
     async (req, res, next) => {
-        const { user_id } = req.params
-        const value = await schema.idparams.user_id.validate(user_id)
+        const { id } =  req.params
+        const value = await schema.idparam.id.validate(id)
         if (value.error) {
             res.json({
                 message: value.error.details[0].message
@@ -74,7 +79,8 @@ router.put("/parcel/destination/change/:user_id/:id",
         next();
     },
     async (req, res) => {
-        const { user_id, id} = req.params;
+        const user_id =   res.locals.user.id;
+        const { id } = req.params;
         try {
             const result = await updateOrderDestination( user_id, id, req.body);
             return res.status(200).json(result)
@@ -84,9 +90,9 @@ router.put("/parcel/destination/change/:user_id/:id",
     }
 );
 
-router.get("/parcel/:user_id",
+router.get("/parcel/", verifyUserToken,
     async (req, res, next) => {
-        const { user_id } = req.params
+        const user_id =   res.locals.user.id;
         const value = await schema.idparams.user_id.validate(user_id)
         if (value.error) {
             res.json({
@@ -96,7 +102,7 @@ router.get("/parcel/:user_id",
         next();
     },
     async (req, res) => {
-        const { user_id } = req.params;
+        const user_id =   res.locals.user.id;
         try {
             const result = await getUserParcelByid(user_id);
             return res.status(200).json(result)
@@ -106,8 +112,10 @@ router.get("/parcel/:user_id",
     }
 );
 
-router.get("/parcel", async (req, res) => {
-    const {user_id,id} = req.query;
+router.get("/parcel/:id", verifyUserToken,
+async (req, res) => {
+    const user_id =   res.locals.user.id;
+    const { id } = req.params;
     try {
         const result = await getUserSpecificParcel(user_id, id);
         return res.status(200).json(result)

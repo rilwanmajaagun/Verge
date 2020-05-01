@@ -18,9 +18,10 @@ const verifyToken = async (req, res, next) => {
             is_admin: decoded.is_admin,
             state: decoded.state
         }
-        if (decoded.is_admin == false) {
-            return res.status(400).send("You are not Authorize")
-        }
+        // if (decoded.is_admin == false) {
+        //     return res.status(400).send("You are not Authorize")
+        // }
+        res.locals.user = req.user
         next();
     } catch (error) {
         console.log(error)

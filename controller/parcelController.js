@@ -11,7 +11,7 @@ async function createNewParcel(user_id, body) {
     const { price, weight, location, destination, sender_name, sender_note } = body;
     const queryObj = {
         text: queries.addNewParcel,
-        values: [user_id, price, weight, location, destination, sender_name, sender_note, status, created_at],
+        values: [user_id, price, weight, location, destination, sender_name, sender_note, status, created_at, created_at],
     };
     try {
         const { rowCount } = await db.query(queryObj);
@@ -30,7 +30,6 @@ async function createNewParcel(user_id, body) {
             });
         }
     } catch (e) {
-        console.log(e);
         return Promise.reject({
             status: "error",
             code: 500,
@@ -161,7 +160,6 @@ async function updateOrderDestination(user_id, id, body) {
             });
         }
     } catch (e) {
-        console.log(e)
         return Promise.reject({
             status: "error",
             code: 500,
@@ -170,30 +168,30 @@ async function updateOrderDestination(user_id, id, body) {
     }
 }
 
-async function checkStatus( user_id, id){
-        const queryObj = {
-            text: queries.getStatus,
-            values: [user_id, id],
-        };
-        try {
-            const { rows } = await db.query(queryObj);
-            if ( rows[0].status == "pending") {
-                return Promise.resolve();
-            }
-            if ( rows[0].status !== "pending") {
-                return Promise.reject({
-                    status: "error",
-                    code: 409,
-                    message: "Order has been shipped"
-                });
-            }
-        } catch (e) {
+async function checkStatus(user_id, id) {
+    const queryObj = {
+        text: queries.getStatus,
+        values: [user_id, id],
+    };
+    try {
+        const { rows } = await db.query(queryObj);
+        if (rows[0].status == "pending") {
+            return Promise.resolve();
+        }
+        if (rows[0].status !== "pending") {
             return Promise.reject({
                 status: "error",
-                code: 500,
-                message: "Error finding user",
+                code: 409,
+                message: "Order has been shipped"
             });
         }
+    } catch (e) {
+        return Promise.reject({
+            status: "error",
+            code: 500,
+            message: "Error finding user",
+        });
+    }
 }
 
 

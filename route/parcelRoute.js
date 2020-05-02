@@ -47,14 +47,12 @@ router.post(
 
 router.put("/parcel/cancel/:id", verifyUserToken,
     async (req, res, next) => {
-        const { id } = req.params
-        const value = await schema.idparam.id.validate(id)
-        if (value.error) {
-            res.status(400).json({
-                message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
-                )
+        try {
+            const { id } = req.params
+            await schema.idparam.id.validateAsync(id)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
             })
         }
         next();
@@ -75,14 +73,12 @@ router.put("/parcel/cancel/:id", verifyUserToken,
 
 router.put("/parcel/destination/change/:id", verifyUserToken,
     async (req, res, next) => {
-        const { id } = req.params
-        const value = await schema.idparam.id.validate(id)
-        if (value.error) {
-            res.status(400).json({
-                message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
-                )
+        try {
+            const { id } = req.params
+            await schema.idparam.id.validateAsync(id)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
             })
         }
         next();
@@ -113,14 +109,12 @@ router.get("/parcel/", verifyUserToken,
 
 router.get("/parcel/:id", verifyUserToken,
     async (req, res, next) => {
-        const { id } = req.params
-        const value = await schema.idparam.id.validate(id)
-        if (value.error) {
-            res.status(400).json({
-                message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
-                )
+        try {
+            const { id } = req.params
+            await schema.idparam.id.validateAsync(id)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
             })
         }
         next();

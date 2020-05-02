@@ -7,8 +7,9 @@ const queries = {
     last_name,
     state,
     created_at,
-    is_admin
-    ) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+    is_admin,
+    is_super_admin
+    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
     findUserByEmail: `
     SELECT * FROM verge_user WHERE email=($1)
     `,
@@ -25,8 +26,9 @@ const queries = {
     sender_name,
     sender_note,
     status,
-    created_at
-    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`
+    created_at,
+    updated_at
+    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`
     ,
     getUserSpecific: `
     SELECT * FROM verge_parcel WHERE user_id=($1) AND id=($2)`,

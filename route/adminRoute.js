@@ -13,23 +13,17 @@ const {
 const {
     schema
 } = require("../Authorization/validation")
-const {verifyToken}= require("../Authorization/verifyToken")
+const {verifySuperAdminToken ,verifyToken } = require("../Authorization/verifyToken")
 
 router.post(
-    "/auth/admin/signup",
+    "/auth/admin/signup", verifySuperAdminToken ,
     async (req, res, next) => {
         try {
-            const value = await schema.user.validate(req.body)
-            if (value.error) {
-                return  res.status(400).json({
-                    message: value.error.details[0].message.replace(
-                            /[\"]/gi,
-                            ""
-                    )
-                })
-            }
-        } catch (e) {
-            console.log(e)
+            await schema.user.validateAsync(req.body)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
+            })
         }
         next();
     },
@@ -38,6 +32,10 @@ router.post(
         try {
             await checkIfUserDoesNotExistBefore(email);
             const result = await createNewAdmin(req.body);
+            delete result.data.response.password
+            delete result.data.response.is_admin
+            delete result.data.response.is_super_admin
+            delete result.data.response.created_at
             return res.status(201).json(result);
         } catch (e) {
             return res.status(e.code).json(e);
@@ -59,14 +57,12 @@ router.get("/parcels/all", verifyToken,
 
 router.put("/parcel/location/change/:id", verifyToken,
     async (req, res, next) => {
-        const { id } = req.params
-        const value = await schema.idparam.id.validate(id)
-        if (value.error) {
-           return res.status(400).json({
-                message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
-                )
+        try {
+            const { id } = req.params
+            await schema.idparam.id.validateAsync(id)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
             })
         }
         next();
@@ -82,16 +78,15 @@ router.put("/parcel/location/change/:id", verifyToken,
     }
 );
 
-router.put("/parcel/status/change/:id", verifyToken,
+router.put("/parcel/status/change/:id",verifyToken,
     async (req, res, next) => {
-        const { id } = req.params;
-        const value = await schema.idparam.id.validate(id)
-        if (value.error) {
-           return res.status(400).json({
-                message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
-                )
+        try {
+            const { id } = req.params
+            await schema.idparam.id.validateAsync(id)
+            await schema.status.validateAsync(req.body)
+        } catch (error) {
+            return res.status(400).json({
+                error: error.details[0].message.replace(/[\"]/gi, "")
             })
         }
         next();

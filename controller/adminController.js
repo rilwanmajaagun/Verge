@@ -15,17 +15,18 @@ async function createNewAdmin(body) {
     const created_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
     const { email, password, first_name, last_name, state } = body;
     const is_admin = true;
+    const is_super_admin = false;
     const hashedPassword = hashPassword(password)
     const queryObj = {
         text: queries.addNewUser,
-        values: [email, hashedPassword, first_name, last_name, state, created_at, is_admin],
+        values: [email, hashedPassword, first_name, last_name, state, created_at, is_admin, is_super_admin],
     };
 
     try {
 
         const { rowCount, rows } = await db.query(queryObj);
         const response = rows[0];
-        const tokens = generateUserToken(response.id, response.first_name, response.last_name, response.email, response.is_admin, response.state);
+        const tokens = generateUserToken(response.id, response.first_name, response.last_name, response.email, response.is_admin, response.is_super_admin, response.state);
         const data = {
             token: tokens,
             response
@@ -46,7 +47,6 @@ async function createNewAdmin(body) {
             });
         }
     } catch (e) {
-        console.log(e);
         return Promise.reject({
             status: "error",
             code: 500,
@@ -55,7 +55,7 @@ async function createNewAdmin(body) {
     }
 }
 
-async function changeOrderStatus( id, body) {
+async function changeOrderStatus(id, body) {
     const { status } = body
     const queryObj = {
         text: queries.updateOrderStatusById,
@@ -78,7 +78,6 @@ async function changeOrderStatus( id, body) {
             });
         }
     } catch (e) {
-        console.log(e)
         return Promise.reject({
             status: "error",
             code: 500,
@@ -87,7 +86,7 @@ async function changeOrderStatus( id, body) {
     }
 }
 
-async function changeOrderlocation( id, body) {
+async function changeOrderlocation(id, body) {
     const { location } = body
     const queryObj = {
         text: queries.updateOrderlocationById,
@@ -110,7 +109,6 @@ async function changeOrderlocation( id, body) {
             });
         }
     } catch (e) {
-        console.log(e)
         return Promise.reject({
             status: "error",
             code: 500,
@@ -156,7 +154,6 @@ async function isAdmin(id) {
             });
         }
     } catch (e) {
-        console.log(e);
         return Promise.reject({
             status: "error",
             code: 500,

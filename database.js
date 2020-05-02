@@ -3,7 +3,7 @@ const dotenv = require("dotenv")
 
 dotenv.config();
 
-const connectionString  = process.env.DATA_BASE_URL
+const connectionString = process.env.DATA_BASE_URL
 
 
 /** using localPostgres with connectionstring 

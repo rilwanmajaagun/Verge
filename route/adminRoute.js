@@ -21,10 +21,10 @@ router.post(
         try {
             const value = await schema.user.validate(req.body)
             if (value.error) {
-                return res.json({
+                return  res.status(400).json({
                     message: value.error.details[0].message.replace(
-                        /[\"]/gi,
-                        ""
+                            /[\"]/gi,
+                            ""
                     )
                 })
             }
@@ -62,7 +62,7 @@ router.put("/parcel/location/change/:id", verifyToken,
         const { id } = req.params
         const value = await schema.idparam.id.validate(id)
         if (value.error) {
-            res.json({
+           return res.status(400).json({
                 message: value.error.details[0].message.replace(
                     /[\"]/gi,
                     ""
@@ -87,7 +87,7 @@ router.put("/parcel/status/change/:id", verifyToken,
         const { id } = req.params;
         const value = await schema.idparam.id.validate(id)
         if (value.error) {
-            res.json({
+           return res.status(400).json({
                 message: value.error.details[0].message.replace(
                     /[\"]/gi,
                     ""

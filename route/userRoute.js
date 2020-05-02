@@ -10,16 +10,17 @@ const {
     schema
 } = require("../Authorization/validation")
 
+
 router.post(
     "/auth/signup",
     async (req, res, next) => {
         try {
             const value = await schema.user.validate(req.body)
             if (value.error) {
-                return res.json({
+                res.status(400).json({
                     message: value.error.details[0].message.replace(
-                        /[\"]/gi,
-                        ""
+                            /[\"]/gi,
+                            ""
                     )
                 })
             }
@@ -43,10 +44,10 @@ router.post("/auth/login",
     async (req, res, next) => {
         const value = await schema.login.validate(req.body)
         if (value.error) {
-            res.json({
+            res.status(400).json({
                 message: value.error.details[0].message.replace(
-                    /[\"]/gi,
-                    ""
+                        /[\"]/gi,
+                        ""
                 )
             })
         }

@@ -36,13 +36,13 @@ async function  statusMail (email, body){
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user:  process.env.EMAIL,
-          pass:  process.env.PASSWORD 
+          user:  process.env.NODE_MAILER_EMAIL,
+          pass:  process.env.NODE_MAILER_PASSWORD
         }
       });
       
       var mailOptions = {
-        from:  process.env.EMAIL,
+        from:  process.env.NODE_MAILER_EMAIL,
         to: email,
         subject: 'Parcel status',
         text: `Parcel has been ${body}`
@@ -50,7 +50,7 @@ async function  statusMail (email, body){
       
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-          console.log(error);
+          console.log(error)
         } else {
           console.log('Email sent: ' + info.response);
         }

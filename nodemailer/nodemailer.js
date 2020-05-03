@@ -31,9 +31,6 @@ async function getEmails(id) {
 async function  statusMail (email, body){
     const transporter = nodemailer.createTransport({
         service: 'gmail',
-        host: 'smtp.gmail.com',
-        secure : false,
-        requireTLS : true,
         auth: {
           user: 'majaagunrilwano@gmail.com',
           pass: 'majaagun30'

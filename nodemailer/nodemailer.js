@@ -29,7 +29,7 @@ async function getEmails(id) {
 }
 
 async function  statusMail (email, body){
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'majaagunrilwano@gmail.com',

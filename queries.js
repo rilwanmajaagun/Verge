@@ -56,7 +56,11 @@ const queries = {
     SELECT * FROM verge_parcel WHERE user_id=($1) AND id=($2)
     `,
     findUserById: `
-    SELECT * FROM verge_user WHERE id=($1)`,
+    SELECT * FROM verge_user WHERE id=($1)
+    `,
+    getEmail:`
+    SELECT email FROM verge_user WHERE id=($1)
+    `
 };
 
 module.exports = queries;

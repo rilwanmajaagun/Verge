@@ -62,7 +62,7 @@ async function changeOrderStatus(id, body) {
         values: [status, id]
     }
     try {
-        const { rowCount } = await db.query(queryObj);
+        const { rows, rowCount } = await db.query(queryObj);
         if (rowCount === 0) {
             return Promise.reject({
                 status: "error",
@@ -75,6 +75,10 @@ async function changeOrderStatus(id, body) {
                 status: "success",
                 code: 200,
                 message: "Status Updated successfully",
+                data: {
+                    status:rows[0].status, 
+                    user_id: rows[0].user_id
+                }
             });
         }
     } catch (e) {
@@ -93,7 +97,7 @@ async function changeOrderlocation(id, body) {
         values: [location, id]
     }
     try {
-        const { rowCount } = await db.query(queryObj);
+        const { rows, rowCount } = await db.query(queryObj);
         if (rowCount === 0) {
             return Promise.reject({
                 status: "error",
@@ -106,6 +110,10 @@ async function changeOrderlocation(id, body) {
                 status: "success",
                 code: 200,
                 message: "location Updated successfully",
+                data: {
+                    location:rows[0].location, 
+                    user_id: rows[0].user_id
+                }
             });
         }
     } catch (e) {

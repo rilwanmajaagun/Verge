@@ -1,0 +1,86 @@
+const nodemailer = require('nodemailer');
+const queries = require("../queries");
+const db = require("../database");
+
+async function getEmails(id) {
+    const queryObj = {
+        text: queries.getEmail,
+        values: [id ],
+    };
+    try {
+        const { rows } = await db.query(queryObj);
+        if (rows) {
+            return Promise.resolve(rows[0].email);
+        }
+        if (!rows) {
+            return Promise.reject({
+                status: "erorr",
+                code: 409,
+                message: "user Email not found",
+            });
+        }
+    } catch (e) {
+        return Promise.reject({
+            status: "error",
+            code: 500,
+            message: "Error finding user",
+        });
+    }
+}
+
+async function  statusMail (email, body){
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'majaagunrilwano@gmail.com',
+          pass: 'majaagun30'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'majaagunrilwano@gmail.com',
+        to: email,
+        subject: 'Parcel status',
+        text: `Parcel has been ${body}`
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+      
+}
+
+async function  locationMail (email, body){
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'majaagunrilwano@gmail.com',
+          pass: 'majaagun30'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'majaagunrilwano@gmail.com',
+        to: email,
+        subject: 'Parcel Location',
+        text: `Parcel current location is ${body}`
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+      
+}
+module.exports = {
+    statusMail,
+    getEmails,
+    locationMail
+}

@@ -14,6 +14,14 @@ const {
     schema
 } = require("../Authorization/validation")
 const {verifySuperAdminToken ,verifyToken } = require("../Authorization/verifyToken")
+ const { 
+     getEmails,
+     statusMail,
+     locationMail
+    } = require("../nodemailer/nodemailer")
+
+
+
 
 router.post(
     "/auth/admin/signup", verifySuperAdminToken ,
@@ -55,7 +63,7 @@ router.get("/parcels/all", verifyToken,
     }
 );
 
-router.put("/parcel/location/change/:id", verifyToken,
+router.put("/parcel/location/change/:id",verifyToken,
     async (req, res, next) => {
         try {
             const { id } = req.params
@@ -71,6 +79,8 @@ router.put("/parcel/location/change/:id", verifyToken,
         const { id } = req.params;
         try {
             const result = await changeOrderlocation(id, req.body);
+            const email = await getEmails(result.data.user_id)
+            await locationMail(email,result.data.location)
             return res.status(200).json(result)
         } catch (e) {
             return res.status(e.code).json(e)
@@ -84,6 +94,7 @@ router.put("/parcel/status/change/:id",verifyToken,
             const { id } = req.params
             await schema.idparam.id.validateAsync(id)
             await schema.status.validateAsync(req.body)
+
         } catch (error) {
             return res.status(400).json({
                 error: error.details[0].message.replace(/[\"]/gi, "")
@@ -95,6 +106,8 @@ router.put("/parcel/status/change/:id",verifyToken,
         const { id } = req.params;
         try {
             const result = await changeOrderStatus(id, req.body);
+            const email = await getEmails(result.data.user_id)
+            await  statusMail(email,result.data.status)
             return res.status(200).json(result)
         } catch (e) {
             return res.status(e.code).json(e)

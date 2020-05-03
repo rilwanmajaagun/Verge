@@ -1,6 +1,10 @@
 const nodemailer = require('nodemailer');
 const queries = require("../queries");
 const db = require("../database");
+const dotenv = require("dotenv")
+
+dotenv.config()
+
 
 async function getEmails(id) {
     const queryObj = {
@@ -32,13 +36,13 @@ async function  statusMail (email, body){
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'majaagunrilwano@gmail.com',
-          pass: 'majaagun30'
+          user:  process.env.EMAIL,
+          pass:  process.env.PASSWORD 
         }
       });
       
       var mailOptions = {
-        from: 'majaagunrilwano@gmail.com',
+        from:  process.env.EMAIL,
         to: email,
         subject: 'Parcel status',
         text: `Parcel has been ${body}`

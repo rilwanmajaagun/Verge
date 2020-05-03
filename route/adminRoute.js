@@ -63,7 +63,7 @@ router.get("/parcels/all", verifyToken,
     }
 );
 
-router.put("/parcel/location/change/:id",verifyToken,
+router.put("/parcel/location/change/:id",
     async (req, res, next) => {
         try {
             const { id } = req.params

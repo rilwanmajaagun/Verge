@@ -62,13 +62,14 @@ async function  locationMail (email, body){
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'majaagunrilwano@gmail.com',
-          pass: 'majaagun30'
+          user:  process.env.NODE_MAILER_EMAIL,
+          pass:  process.env.NODE_MAILER_PASSWORD
+
         }
       });
       
       var mailOptions = {
-        from: 'majaagunrilwano@gmail.com',
+        from:  process.env.NODE_MAILER_EMAIL,
         to: email,
         subject: 'Parcel Location',
         text: `Parcel current location is ${body}`

@@ -13,7 +13,7 @@ const {
     schema
 } = require("../Authorization/validation")
 const { isAdmin } = require("../controller/adminController")
-const { verifyToken, verifyUserToken } = require("../Authorization/verifyToken")
+const {verifyUserToken } = require("../Authorization/verifyToken")
 
 
 

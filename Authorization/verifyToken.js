@@ -69,7 +69,7 @@ const verifySuperAdminToken = async (req, res, next) => {
                 message: "User not Allowed"
             })
         }
-        res.locals.user = req.user
+        res.locals.user = req.user 
         next();
     } catch (error) {
         console.log(error)

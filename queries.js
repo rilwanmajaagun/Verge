@@ -40,15 +40,15 @@ const queries = {
     `,
     updateOrderDestinationById:
         `
-    UPDATE verge_parcel SET destination=($1), user_id=($2) WHERE id=($3) RETURNING *
+    UPDATE verge_parcel SET destination=($1), user_id=($2), updated_at=($3) WHERE id=($4) RETURNING *
     `,
     updateOrderStatusById:
         `
-    UPDATE verge_parcel SET status=($1) WHERE id=($2) RETURNING *
+    UPDATE verge_parcel SET status=($1), updated_at =($2) WHERE id=($3) RETURNING *
     `,
     updateOrderlocationById:
         `
-    UPDATE verge_parcel SET location=($1) WHERE id=($2) RETURNING *
+    UPDATE verge_parcel SET location=($1), updated_at=($2) WHERE id=($3) RETURNING *
     `,
     getAllUserOrder: `
     SELECT * FROM verge_parcel`,

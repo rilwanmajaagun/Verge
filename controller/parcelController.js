@@ -131,10 +131,12 @@ async function deleteUserParcelById(user_id, id) {
 }
 
 async function updateOrderDestination(user_id, id, body) {
-    const { destination } = body
+    const { destination } = body;
+    const d = new Date();
+    const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
     const queryObj = {
         text: queries.updateOrderDestinationById,
-        values: [destination, user_id, id]
+        values: [destination, user_id, updated_at, id]
     }
     try {
         const { rows, rowCount } = await db.query(queryObj);

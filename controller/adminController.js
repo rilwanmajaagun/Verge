@@ -57,9 +57,11 @@ async function createNewAdmin(body) {
 
 async function changeOrderStatus(id, body) {
     const { status } = body
+    const d = new Date();
+    const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
     const queryObj = {
         text: queries.updateOrderStatusById,
-        values: [status, id]
+        values: [status, updated_at, id]
     }
     try {
         const { rows, rowCount } = await db.query(queryObj);
@@ -92,9 +94,11 @@ async function changeOrderStatus(id, body) {
 
 async function changeOrderlocation(id, body) {
     const { location } = body
+    const d = new Date();
+    const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
     const queryObj = {
         text: queries.updateOrderlocationById,
-        values: [location, id]
+        values: [location, updated_at, id]
     }
     try {
         const { rows, rowCount } = await db.query(queryObj);
